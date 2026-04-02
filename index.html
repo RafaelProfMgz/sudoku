@@ -33,11 +33,25 @@
         </p>
 
         <div class="controls">
+          <label for="game-mode">Modo</label>
+          <select id="game-mode">
+            <option value="classic" selected>Classico</option>
+            <option value="campaign">Campanha</option>
+            <option value="training">Treino</option>
+          </select>
+
           <label for="difficulty">Dificuldade</label>
           <select id="difficulty">
             <option value="easy">Fácil</option>
             <option value="medium" selected>Médio</option>
             <option value="hard">Difícil</option>
+          </select>
+
+          <label for="training-technique">Tecnica de treino</label>
+          <select id="training-technique">
+            <option value="singles" selected>Singles (basico)</option>
+            <option value="pairs">Pares</option>
+            <option value="box-focus">Foco em blocos</option>
           </select>
 
           <label for="theme-select">Tema</label>
@@ -46,6 +60,8 @@
             <option value="slate">Slate</option>
             <option value="old">Old</option>
             <option value="dark">Dark</option>
+            <option value="sunrise">Sunrise</option>
+            <option value="forest">Forest</option>
           </select>
 
           <label class="switch" for="challenge-mode">
@@ -57,6 +73,14 @@
           <button id="check" type="button">Verificar</button>
           <button id="hint" type="button">Dica inteligente</button>
           <button id="solve" type="button">Resolver</button>
+          <label class="switch" for="mute-sound">
+            <input id="mute-sound" type="checkbox" />
+            <span>Mute de sons</span>
+          </label>
+          <label class="switch" for="explain-hint">
+            <input id="explain-hint" type="checkbox" checked />
+            <span>Dica explicada em linguagem humana</span>
+          </label>
           <button id="share-result" type="button">
             Compartilhar resultado
           </button>
@@ -67,8 +91,54 @@
           <span id="filled">Preenchido: 0/81</span>
         </div>
         <p id="challenge-info" class="challenge-info" aria-live="polite"></p>
+        <p id="mode-info" class="challenge-info" aria-live="polite"></p>
 
         <p id="message" class="message" aria-live="polite"></p>
+
+        <section class="daily" aria-label="Missao diaria">
+          <h2>Missao diaria</h2>
+          <p id="daily-mission-text" class="mission-text"></p>
+          <p id="daily-mission-progress" class="mission-progress"></p>
+        </section>
+
+        <section class="campaign" aria-label="Modo campanha">
+          <h2>Campanha</h2>
+          <p id="campaign-status" class="mission-text"></p>
+        </section>
+
+        <section class="streak" aria-label="Streak">
+          <h2>Streak</h2>
+          <p id="streak-text" class="mission-text"></p>
+        </section>
+
+        <section class="ranking" aria-label="Ranking local">
+          <h2>Ranking local</h2>
+          <ul id="ranking-list" class="ranking-list"></ul>
+        </section>
+
+        <section class="personalization" aria-label="Personalizacao visual">
+          <h2>Personalizacao visual</h2>
+          <div class="controls compact-controls">
+            <label for="board-size">Tamanho da grade</label>
+            <select id="board-size">
+              <option value="compact">Compacta</option>
+              <option value="normal" selected>Normal</option>
+              <option value="large">Grande</option>
+            </select>
+
+            <label for="font-size">Tamanho da fonte</label>
+            <select id="font-size">
+              <option value="small">Pequena</option>
+              <option value="normal" selected>Normal</option>
+              <option value="large">Grande</option>
+            </select>
+
+            <label class="switch" for="high-contrast">
+              <input id="high-contrast" type="checkbox" />
+              <span>Alto contraste</span>
+            </label>
+          </div>
+        </section>
 
         <section class="stats" aria-label="Estatisticas gerais">
           <h2>Estatisticas</h2>
