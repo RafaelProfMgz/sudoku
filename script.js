@@ -3,6 +3,7 @@ const BOX = 3;
 
 const boardEl = document.getElementById("board");
 const difficultyEl = document.getElementById("difficulty");
+const themeSelectEl = document.getElementById("theme-select");
 const challengeModeEl = document.getElementById("challenge-mode");
 const timerEl = document.getElementById("timer");
 const filledEl = document.getElementById("filled");
@@ -26,6 +27,7 @@ const SAVE_KEY = "sudoku-save-v2";
 const HISTORY_KEY = "sudoku-history-v2";
 const STATS_KEY = "sudoku-stats-v1";
 const ACHIEVEMENTS_KEY = "sudoku-achievements-v1";
+const THEME_KEY = "sudoku-theme-v1";
 
 const difficultyBlanks = {
   easy: 36,
@@ -115,13 +117,16 @@ difficultyEl.addEventListener("change", () => {
   updateChallengeInfo();
   saveGame();
 });
+themeSelectEl.addEventListener("change", () => {
+  applyThemeVariant(themeSelectEl.value);
+  saveGame();
+});
 challengeModeEl.addEventListener("change", () => {
   updateChallengeInfo();
   saveGame();
 });
 
-applyThemeByTime();
-window.setInterval(applyThemeByTime, 60_000);
+applyThemeVariant(loadThemePreference());
 window.addEventListener("resize", syncSidebarWithViewport);
 
 if (!restoreGame()) {
@@ -643,6 +648,7 @@ function saveGame() {
     timeLimit: state.timeLimit,
     hintsUsed: state.hintsUsed,
     lastResult: state.lastResult,
+    theme: themeSelectEl.value,
   };
 
   try {
@@ -665,6 +671,7 @@ function restoreGame() {
     }
 
     difficultyEl.value = data.difficulty;
+    applyThemeVariant(data.theme || loadThemePreference());
     challengeModeEl.checked = Boolean(data.challengeMode);
     state.gameId = data.id || buildGameId();
     state.createdAt = data.createdAt || new Date().toISOString();
@@ -1335,10 +1342,26 @@ function toggleControls(disabled) {
   solveBtn.disabled = disabled;
 }
 
-function applyThemeByTime() {
-  const hour = new Date().getHours();
-  const isNight = hour >= 19 || hour < 6;
-  document.body.classList.toggle("night-mode", isNight);
+function applyThemeVariant(themeName) {
+  const allowed = ["glass", "slate", "old", "dark"];
+  const nextTheme = allowed.includes(themeName) ? themeName : "glass";
+  document.body.classList.remove(
+    "theme-glass",
+    "theme-slate",
+    "theme-old",
+    "theme-dark",
+  );
+  document.body.classList.add(`theme-${nextTheme}`);
+  themeSelectEl.value = nextTheme;
+  localStorage.setItem(THEME_KEY, nextTheme);
+}
+
+function loadThemePreference() {
+  const raw = localStorage.getItem(THEME_KEY);
+  if (raw === "glass" || raw === "slate" || raw === "old" || raw === "dark") {
+    return raw;
+  }
+  return "glass";
 }
 
 function cloneBoard(board) {
